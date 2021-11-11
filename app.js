@@ -3,7 +3,7 @@ require("./config/database").connect();
 const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-
+const mongoose = require("mongoose");
 
 
 const User = require("./model/user");
@@ -32,7 +32,6 @@ const Varaus = mongoose.model(
 // LUODAAN SIVUSTOLLE REITIT JA NIIDEN OMINAISUUDET
 
 // Tulostetaan kaikki varaukset.
-var mongoose = require("mongoose");
 app.get("/api/getall", function (req, res) {
   Varaus.find({}, function (err, results) {
     console.log("Kaikki liikunta-data on haettu!");
