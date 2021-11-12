@@ -5,7 +5,6 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
 
-
 const User = require("./model/user");
 const auth = require("./middleware/auth");
 
@@ -127,26 +126,26 @@ app.delete("/api/delete:id", function (req, res) {
 
 app.post("/register", async (req, res) => {
   try {
-    // Get user input
+    // Hae käyttäjän syöte
     const { apartment, first_name, last_name, email, password } = req.body;
 
-    // Validate user input
+   // Vahvista käyttäjän syöte
     if (!(email && password && first_name && last_name && apartment)) {
       res.status(400).send("All input is required");
     }
 
-    // check if user already exist
-    // Validate if user exist in our database
+    // Tarkista, onko käyttäjä jo olemassa
+    // Tarkista, onko käyttäjä tietokannassamme
     const oldUser = await User.findOne({ email });
 
     if (oldUser) {
       return res.status(409).send("User Already Exist. Please Login");
     }
 
-    //Encrypt user password
+       //Salaa käyttäjän salasana
     encryptedPassword = await bcrypt.hash(password, 10);
 
-    // Create user in our database
+// Luo käyttäjä tietokantaan
     const user = await User.create({
       apartment,
       first_name,
@@ -155,7 +154,7 @@ app.post("/register", async (req, res) => {
       password: encryptedPassword,
     });
 
-    // Create token
+  // Luo tunnus(TOKEN)
     const token = jwt.sign(
       { user_id: user._id, email },
       process.env.TOKEN_KEY,
@@ -163,10 +162,10 @@ app.post("/register", async (req, res) => {
         expiresIn: "2h",
       }
     );
-    // save user token
+// tallenna käyttäjätunnus(TOKEN)
     user.token = token;
 
-    // return new user
+// palauta uusi käyttäjä
     res.status(201).json(user);
   } catch (err) {
     console.log(err);
@@ -175,18 +174,18 @@ app.post("/register", async (req, res) => {
 
 app.post("/login", async (req, res) => {
   try {
-    // Get user input
+// Hae käyttäjän syöte
     const { email, password } = req.body;
 
-    // Validate user input
+    // Vahvista käyttäjän syöte
     if (!(email && password)) {
       res.status(400).send("All input is required");
     }
-    // Validate if user exist in our database
+  // Tarkista, onko käyttäjä tietokannassamme
     const user = await User.findOne({ email });
 
     if (user && (await bcrypt.compare(password, user.password))) {
-      // Create token
+      // Luo tunnus(TOKEN)
       const token = jwt.sign(
         { user_id: user._id, email },
         process.env.TOKEN_KEY,
@@ -195,10 +194,10 @@ app.post("/login", async (req, res) => {
         }
       );
 
-      // save user token
+// tallenna käyttäjätunnus(TOKEN)
       user.token = token;
 
-      // user
+        // käyttäjä
       res.status(200).json(user);
     }
     res.status(400).send("Invalid Credentials");
@@ -222,9 +221,5 @@ app.use("*", (req, res) => {
     },
   });
 });
-
-
-
-
 
 module.exports = app;
