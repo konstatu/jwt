@@ -20,7 +20,7 @@ const Varaus = mongoose.model(
   "Varaukset",
   {
     tila: String,
-    varaaja: String,
+    aparment: String,
     pvm: String,
     aloitus: String,
     lopetus: String,
@@ -40,9 +40,9 @@ app.get("/api/getall", function (req, res) {
 });
 
 // Haetaan varaajan perusteella.
-app.get("/api/varaaja/:text", function (req, res) {
-  Varaus.find({ varaaja: req.params.text }, function (err, results) {
-    console.log("Henkilön \"" + req.params.text + "\" varaukset on haettu!");
+app.get("/api/aparment/:text", function (req, res) {
+  Varaus.find({ aparment: req.params.text }, function (err, results) {
+    console.log("Asunnon \"" + req.params.text + "\" varaukset on haettu!");
     res.json(results);
   });
 });
@@ -50,7 +50,7 @@ app.get("/api/varaaja/:text", function (req, res) {
 // Haetaan tilan perusteella.
 app.get("/api/tila/:text", function (req, res) {
   Varaus.find({ tila: req.params.text }, function (err, results) {
-    console.log("Henkilön \"" + req.params.text + "\" varaukset on haettu!");
+    console.log("Tilan \"" + req.params.text + "\" varaukset on haettu!");
     res.json(results);
   });
 });
@@ -88,7 +88,7 @@ app.post("/api/add", function (req, res) {
   
   var newVaraukset = new Varaus({
     tila: req.body.tila,
-    varaaja: req.body.varaaja,
+    aparment: req.body.aparment,
     pvm: req.body.pvm,
     aloitus: req.body.aloitus,
     lopetus: req.body.lopetus,
@@ -148,6 +148,7 @@ app.post("/register", async (req, res) => {
 
     // Create user in our database
     const user = await User.create({
+      aparment,
       first_name,
       last_name,
       email: email.toLowerCase(), // sanitize: convert email to lowercase
