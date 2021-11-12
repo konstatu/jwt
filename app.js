@@ -128,10 +128,10 @@ app.delete("/api/delete:id", function (req, res) {
 app.post("/register", async (req, res) => {
   try {
     // Get user input
-    const { first_name, last_name, email, password } = req.body;
+    const { apartment, first_name, last_name, email, password } = req.body;
 
     // Validate user input
-    if (!(email && password && first_name && last_name)) {
+    if (!(email && password && first_name && last_name && apartment)) {
       res.status(400).send("All input is required");
     }
 
