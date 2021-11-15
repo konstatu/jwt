@@ -37,6 +37,12 @@ app.get("/api/getall", function (req, res) {
     res.json(results);
   });
 });
+app.get("/api/get-all", function (req, res) {
+  users.find({}, function (err, results) {
+    console.log("Kaikki liikunta-data on haettu!");
+    res.json(results);
+  });
+});
 
 // Haetaan varaajan perusteella.
 app.get("/api/apartment/:text", function (req, res) {
