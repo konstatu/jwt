@@ -38,8 +38,8 @@ app.get("/api/getall", function (req, res) {
   });
 });
 app.get("/api/get-all", function (req, res) {
-  users.find({}, function (err, results) {
-    console.log("Kaikki liikunta-data on haettu!");
+  user.find({}, function (err, results) {
+    console.log("Kaikki user data on haettu!");
     res.json(results);
   });
 });
