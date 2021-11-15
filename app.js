@@ -167,7 +167,7 @@ app.post("/register", async (req, res) => {
     user.token = token;
 
     app.get("/api/alluser", function (req, res) {
-  user.find({}, function (err, results) {
+  users.find({}, function (err, results) {
     console.log("Kaikki user data on haettu!");
     res.json(results);
   });
